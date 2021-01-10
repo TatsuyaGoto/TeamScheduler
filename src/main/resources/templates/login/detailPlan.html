@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:payout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div th:fragment="detailPlan_contents">
+		<div class="page-header">
+			<h3>参加登録</h3>
+			<div class="row">
+			<div class="col-sm-2" th:text="現在の + ${userName} + さんの状態"></div>
+		</div>
+		<div class="row text-center">
+				<!-- <h1 class="text-center status" th:text="『 + ${userStatus} + 』"></h1> -->
+				<h1 class="text-success" th:text="『 + ${userStatus} + 』" th:if="${userStatus == '参加'}"></h1>
+				<h1 class="text-danger" th:text="『 + ${userStatus} + 』" th:if="${userStatus == '不参加'}"></h1>
+				<h1 class="text-warning" th:text="『 + ${userStatus} + 』" th:if="${userStatus == '調整中'}"></h1>
+				<h1 class="text-muted" th:text="『 + ${userStatus} + 』" th:if="${userStatus == '未回答'}"></h1>
+		</div>
+
+		<div class="row">
+			<form method="post" th:action="@{/detailPlan}">
+				<div class="text-center">
+					<input type="hidden" name="planNo" th:value="${mpa.planNo}">
+					<input type="hidden" name="userStatus" th:value="${userStatus}">
+					<button class="btn btn-success btn-lg" type="submit"  name="action" th:value="参加">&ensp;参加&ensp;</button>
+					<button class="btn btn-warning btn-lg" type="submit"  name="action" th:value="調整中">調整中</button>
+					<button class="btn btn-danger btn-lg" type="submit"  name="action" th:value="不参加">不参加</button>
+
+				</div>
+			</form>
+		</div>
+		</div>
+		<div  class="row">
+			<!-- <div class="col-sm-2" th:text="予定No. + ${mpa.planNo}"></div> -->
+			<div class="col-sm-6 col-xs-12">
+				<span th:text="予定No. + ${mpa.planNo}"></span>
+				<span class="plan-status" th:text="${mpa.status}" th:if="${mpa.status == '中止'}"></span>
+			</div>
+			<table class="table table-bordered table-hover">
+				<tr>
+					<th class="info col-sm-2 col-xs-3">日付</th>
+					<td class="col-sm-4 col-xs-9" th:text="${#dates.format(mpa.matchday, 'MM/dd(E)')}">
+					</td>
+				</tr>
+				<tr>
+					<th class="info">時間</th>
+					<td th:text="${#dates.format(mpa.startTime, 'HH:mm')} + ～（ + ${mpa.matchTime} + ）">
+					</td>
+				</tr>
+				<tr>
+					<th class="info">場所</th>
+					<td th:text="${mpa.location}">
+					</td>
+				</tr>
+				<tr>
+					<th class="info">相手</th>
+					<td th:text="${mpa.opponent}">
+					</td>
+				</tr>
+				<tr th:each="list : ${memberList}">
+					<th class="info" th:text="${list.key}"></th>
+					<td>
+						<div class="inline" th:each="member : ${list.value}">
+							<div th:text="${member}"></div>
+						</div>
+					</td>
+				</tr>
+
+			</table>
+		</div>
+
+		<div class="text-center">
+			<a class="btn btn-primary btn-lg" th:href="@{'/modifyPlan/' + ${mpa.planNo}}">予定修正</a>
+			<a class="btn btn-danger btn-lg" th:href="@{'/cancelPlan/' + ${mpa.planNo}}">開催中止</a><br><br>
+			<a th:href="${'/home'}">戻る</a>
+		</div>
+
+	</div>
+
+</body>
+</html>

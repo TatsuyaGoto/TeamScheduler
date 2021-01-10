@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:payout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div th:fragment="modifyPlan_contents">
+		<div class="page-header">
+			<h3>開催予定修正</h3>
+		</div>
+		<form method="post" th:action="@{/modifyPlan}" th:object="${planningForm}">
+            <div class="form-group row" th:classappend="${#fields.hasErrors('matchday')}?'has-error'">
+                <div class='col-sm-1 col-xs-3'>
+                	<label>日付</label>
+                </div>
+                <div class='col-sm-6 col-xs-9'>
+                    <input type='text' class="form-control sc-style" readonly="readonly" id='datetimepicker1' placeholder="yyyy/MM/dd" th:field="*{matchday}" />
+                    <span class="text-danger" th:if="${#fields.hasErrors('matchday')}" th:errors="*{matchday}">matchday error</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class='col-sm-1 col-xs-3'>
+                	<label>開始時間</label>
+                </div>
+                <div class='col-sm-6 col-xs-9'>
+                    <input type='text' class="form-control sc-style" readonly="readonly" id='datetimepicker2' placeholder="HH:mm" th:field="*{startTime}" />
+                </div>
+            </div>
+            <div class="form-group row">
+            	<div class='col-sm-1 col-xs-4'>
+            		<label>ゲーム時間</label>
+            	</div>
+            	<div class="col-sm-6 col-xs-8">
+            		<!-- <div class="form-inline" id='radio-button'>  -->
+            	    	<label><input type="radio" name="matchTime" th:text="2時間" th:value="2h" th:field="*{matchTime}" />&emsp;</label>
+						<label><input type="radio" name="matchTime" th:text="3時間" th:value="3h" th:field="*{matchTime}" />&emsp;</label>
+						<label><input type="radio" name="matchTime" th:text="4時間" th:value="4h" th:field="*{matchTime}" />&emsp;</label>
+					<!-- </div> -->
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-1 col-xs-4">
+					<label>場所</label>
+				</div>
+				<div class="col-sm-6 col-xs-8">
+						<label><input type="radio" name="location" th:text="尼崎スポーツの森" th:value="尼崎スポーツの森" th:field="*{location}" /></label><br>
+						<label><input type="radio" name="location" th:text="鶴見フットメッセ" th:value="鶴見フットメッセ" th:field="*{location}" /></label><br>
+						<label><input type="radio" name="location" th:text="宝塚CABO" th:value="宝塚CABO" th:field="*{location}" /></label><br>
+						<label><input type="radio" name="location" th:text="その他（下に場所入力）" th:value="その他" th:field="*{location}" /></label><br>
+						<input type="text" name="other" class="form-control" th:field="*{other}" >
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-1 col-xs-4">
+					<label>相手</label>
+				</div>
+				<div class="col-sm-6 col-xs-8">
+						<label><input type="radio" name="opponent" th:text="身内メイン" th:value="身内メイン" th:field="*{opponent}" /></label><br>
+						<label><input type="radio" name="opponent" th:text="穂積さんのやつ" th:value="穂積さんのやつ" th:field="*{opponent}" /></label><br>
+						<label><input type="radio" name="opponent" th:text="その他知人" th:value="その他知人" th:field="*{opponent}" /></label><br>
+				</div>
+			</div>
+			<input type="hidden" name="planNo" class="form-control" th:field="*{planNo}" />
+			<div class="text-center">
+			<p class="text-danger">開始時間の再設定必要!</p>
+			<button class="btn btn-primary btn-lg" type="submit" name="update">
+			計画修正
+			</button><br>
+			<br>
+			<button class="btn btn-danger btn-lg" type="submit" name="cancell">
+			開催中止
+			</button>
+			</div>
+			<br>
+			<div class="text-center">
+				<a th:href="${'/home'}">戻る</a>
+			</div>
+
+        </form>
+	</div>
+</body>
+</html>
