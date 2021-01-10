@@ -1,1 +1,2 @@
-# lavita-scheduler
+# TeamScheduler
+# フットサルチームの出欠管理用アプリ
