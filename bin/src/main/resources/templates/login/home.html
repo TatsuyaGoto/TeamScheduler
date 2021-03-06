@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:payout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div th:fragment="home_contents">
+		<div class="page-header">
+			<h3>開催予定一覧</h3>
+		</div>
+		<div  th:each="mpa : ${mpaList}">
+			<!-- <div class="col-sm-2" th:text="予定No. + ${mpa.planNo}"> -->
+			<div class="col-sm-6 col-xs-12">
+				<span th:text="予定No. + ${mpa.planNo}"></span>
+				<span class="plan-status" th:text="${mpa.status}" th:if="${mpa.status == '中止'}"></span>
+			</div>
+			<table class="table table-bordered table-hover">
+				<tr>
+					<th class="info col-sm-2 col-xs-3">日付</th>
+					<td class="col-sm-4 col-xs-9" th:text="${#dates.format(mpa.matchday, 'MM/dd(E)')}">
+					</td>
+				</tr>
+				<tr>
+					<th class="info">時間</th>
+					<td th:text="${#dates.format(mpa.startTime, 'HH:mm')} + ～（ + ${mpa.matchTime} + ）">
+					</td>
+				</tr>
+				<tr>
+					<th class="info">場所</th>
+					<td th:text="${mpa.location}">
+					</td>
+				</tr>
+				<tr>
+					<th class="info">相手</th>
+					<td th:text="${mpa.opponent}">
+					</td>
+				</tr>
+				<tr>
+					<th class="info">参加<br>状況</th>
+					<!-- <td th:text="参加： + ${mpa.attendance} + 人，不参加： + ${mpa.absence} + 人，調整中： + ${mpa.adjust} + 人"> -->
+					<td>
+						<span th:text="参加： + ${mpa.attendance} + 人" ></span><br>
+						<span th:text="不参加： + ${mpa.absence} + 人" ></span><br>
+						<span th:text="調整中： + ${mpa.adjust} + 人" ></span>
+					</td>
+				</tr>
+				<tr>
+					<th class="info"></th>
+					<td>
+						<a class="btn btn-danger btn-lg pull-right" th:href="@{'/modifyPlan/' + ${mpa.planNo}}">予定修正</a>
+						<a class="btn btn-primary btn-lg" th:href="@{'/detailPlan/' + ${mpa.planNo}}">出欠登録</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<h3 th:text="開催予定なし" th:if="${mpaList == null}"></h3>
+
+	</div>
+</body>
+</html>
