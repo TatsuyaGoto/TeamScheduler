@@ -1,7 +1,7 @@
 package com.example.demo.login.domain.repository;
 
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -19,6 +19,8 @@ public class LineClient {
 
 	@Autowired
 	LineMessagingClient lineMessagingClient;
+	@Autowired
+	IndividualDaoJdbc individualDao;
 
 	public void pushMessage(String message) {
 
@@ -28,8 +30,10 @@ public class LineClient {
 	    	PushMessage pushMessage = new PushMessage("Cbd6bbdf148755beb5e88f452df463f38", textMessage);
 	    	//PushMessage pushMessage = new PushMessage("U3ffa70b26534f3f36f59c17b82e7295d", textMessage);
 
-	    	Set<String> set = new HashSet<>();
-	    	Collections.addAll(set, "U3ffa70b26534f3f36f59c17b82e7295d", "U865a594ac019120cb7ae63039f0f3a15", "U609c2791228a2161de15122fd8992c8e", "U64ca0abe38ddaa36c978f612ab7d29fc");
+	    	List<String> getList = individualDao.getLineMember();
+	    	Set<String> set = new HashSet<>(getList);
+
+	    	//Collections.addAll(set, "U3ffa70b26534f3f36f59c17b82e7295d", "U865a594ac019120cb7ae63039f0f3a15", "U609c2791228a2161de15122fd8992c8e", "U64ca0abe38ddaa36c978f612ab7d29fc");
 	    	Multicast multicast = new Multicast(set, textMessage);
 
 	      BotApiResponse response1 = lineMessagingClient.pushMessage(pushMessage).get();
